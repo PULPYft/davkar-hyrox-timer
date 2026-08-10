@@ -1,7 +1,7 @@
 {
-  "name": "DAVKAR HYROX Timer",
+  "name": "DAVKAR HYROX Trainer V4",
   "short_name": "DAVKAR",
-  "description": "Cronómetro individual de entrenamiento HYROX del Team DAVKAR",
+  "description": "Creador y cronómetro de entrenamientos HYROX del Team DAVKAR",
   "id": "./",
   "start_url": "./",
   "scope": "./",
