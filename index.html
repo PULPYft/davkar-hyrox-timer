@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="apple-touch-icon" sizes="180x180" href="davkar-icon-180.png" />
-    <title>DAVKAR HYROX Timer V3</title>
+    <title>DAVKAR HYROX Trainer V4</title>
     <style>
       :root {
         --bg: #0c0c0c;
@@ -407,6 +407,28 @@
           animation: none;
         }
       }
+      /* V4 · HYROX workout builder */
+      .builder-hero{padding:16px;margin-bottom:12px;border:1px solid #3b2621;border-radius:10px;background:linear-gradient(135deg,#25130f,#141414 58%)}
+      .builder-hero h1{margin:0 0 6px;font-size:22px;letter-spacing:.02em}.builder-hero p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+      .template-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}
+      .template-card{min-height:82px;padding:12px;text-align:left;border:1px solid #383838;border-radius:8px;background:#181818;color:var(--text)}
+      .template-card b,.template-card span{display:block}.template-card b{font-size:14px}.template-card span{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.35}
+      .template-card:active{transform:scale(.98)}
+      .builder-form{padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
+      .builder-form h2,.builder-list-head h2{margin:0;font-size:15px}.builder-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:8px;margin-top:10px}
+      .builder-grid .full{grid-column:1/-1}.builder-grid label{display:block;margin-bottom:5px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+      .builder-grid input,.builder-grid select{width:100%}
+      .builder-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+      .builder-list-head{display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px}.builder-count{color:var(--muted);font-size:11px}
+      .builder-list{display:grid;gap:8px}.builder-empty{padding:22px 14px;border:1px dashed #444;border-radius:8px;color:var(--muted);text-align:center;font-size:12px;line-height:1.5}
+      .builder-block{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center;padding:10px;border:1px solid #363636;border-left:4px solid var(--red);border-radius:8px;background:#171717}
+      .builder-block.run{border-left-color:var(--green)}.builder-block.rest{border-left-color:var(--amber)}
+      .block-index{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#252525;color:var(--muted);font-size:11px;font-weight:800}
+      .block-copy b,.block-copy span{display:block}.block-copy b{font-size:13px}.block-copy span{margin-top:3px;color:var(--muted);font-size:10px}
+      .block-tools{display:flex;gap:4px}.block-tools button{min-width:32px;padding:7px;border-color:#333;font-size:12px}
+      .round-preview{margin:10px 0;padding:9px;border-radius:7px;background:#ff3d1f10;color:#ffc2b7;font-size:11px;text-align:center}
+      .builder-footer{position:sticky;bottom:calc(8px + var(--safe));z-index:6;display:grid;grid-template-columns:.7fr 1.3fr;gap:8px;margin-top:14px;padding:8px;border:1px solid #383838;border-radius:10px;background:#111e;backdrop-filter:blur(8px)}
+      @media(min-width:620px){.template-grid{grid-template-columns:repeat(4,1fr)}.builder-grid{grid-template-columns:1.4fr .7fr .7fr}.builder-grid .full{grid-column:auto}}
       .goal-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:9px 0 0}
       .goal-chip{padding:8px 6px;border:1px solid #333;border-radius:6px;background:#111;text-align:center}
       .goal-chip span{display:block;color:var(--muted);font-size:8px;letter-spacing:.1em;text-transform:uppercase}
@@ -1137,11 +1159,41 @@
         <div class="pill" id="status">LISTO</div>
       </header>
       <nav class="tabs" aria-label="Secciones">
-        <button class="tab active" data-tab="timer">Cronómetro</button
+        <button class="tab active" data-tab="builder">Crear</button
+        ><button class="tab" data-tab="timer">Entrenar</button
         ><button class="tab" data-tab="history">Historial</button
         ><button class="tab" data-tab="stats">Estadísticas</button>
       </nav>
-      <section class="panel active" id="timerPanel">
+      <section class="panel active" id="builderPanel">
+        <div class="builder-hero">
+          <h1>Crea tu sesión HYROX</h1>
+          <p>Combina carrera, estaciones y descansos. Repite el circuito por rondas y ejecútalo tramo a tramo.</p>
+        </div>
+        <div class="template-grid" id="templateGrid">
+          <button class="template-card" data-template="full"><b>HYROX completo</b><span>8 carreras + 8 estaciones oficiales</span></button>
+          <button class="template-card" data-template="half"><b>Medio HYROX</b><span>4 carreras + 4 estaciones</span></button>
+          <button class="template-card" data-template="runIntervals"><b>Intervalos carrera</b><span>6 × 1 km con recuperación</span></button>
+          <button class="template-card" data-template="engine"><b>Motor HYROX</b><span>Carrera + SkiErg + remo por rondas</span></button>
+        </div>
+        <div class="builder-form">
+          <h2>Añadir bloque</h2>
+          <div class="builder-grid">
+            <div><label for="builderType">Tipo</label><select id="builderType"><option value="run">Carrera</option><option value="station">Estación</option><option value="rest">Descanso</option></select></div>
+            <div><label for="builderTarget">Objetivo</label><input id="builderTarget" inputmode="decimal" value="1000" /></div>
+            <div><label for="builderUnit">Unidad</label><select id="builderUnit"><option value="m">metros</option><option value="km">kilómetros</option><option value="min">minutos</option><option value="s">segundos</option><option value="reps">repeticiones</option><option value="cal">calorías</option></select></div>
+            <div class="full"><label for="builderName">Ejercicio / nombre</label><select id="builderName"></select></div>
+          </div>
+          <div class="builder-actions"><button class="ghost" id="addBlockBtn">+ Añadir bloque</button><button class="ghost" id="duplicateLastBtn">Duplicar último</button></div>
+        </div>
+        <div class="builder-list-head"><h2>Secuencia</h2><span class="builder-count" id="builderCount">0 bloques</span></div>
+        <div class="round-preview" id="roundPreview">1 ronda · 0 tramos totales</div>
+        <div class="builder-list" id="builderList"></div>
+        <div class="builder-footer">
+          <div><label for="builderRounds">Rondas</label><select id="builderRounds"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>10</option></select></div>
+          <button class="primary" id="useWorkoutBtn">Usar entrenamiento</button>
+        </div>
+      </section>
+      <section class="panel" id="timerPanel">
         <div class="resume" id="resumeBox">
           Hay un entrenamiento sin terminar.
           <div>
@@ -1392,6 +1444,52 @@
           runs: "Solo carreras",
           custom: "Personalizado",
         };
+        const BUILDER_STATIONS = ["SkiErg","Sled Push","Sled Pull","Burpee Broad Jumps","Remo","Farmers Carry","Sandbag Lunges","Wall Balls","Ejercicio libre"];
+        const builderTemplates = {
+          full: () => DEF.flatMap((station) => [{name:"Carrera",type:"run",target:"1",unit:"km"},{name:station.split(" — ")[0],type:"station",target:(station.match(/\d+(?:\/\d+)?/)||[""])[0],unit:station.includes("reps")?"reps":"m"}]),
+          half: () => DEF.slice(0,4).flatMap((station) => [{name:"Carrera",type:"run",target:"1",unit:"km"},{name:station.split(" — ")[0],type:"station",target:(station.match(/\d+/)||[""])[0],unit:"m"}]),
+          runIntervals: () => Array.from({length:6},(_,i)=>[{name:"Intervalo de carrera",type:"run",target:"1",unit:"km"},...(i<5?[{name:"Recuperación",type:"rest",target:"90",unit:"s"}]:[])]).flat(),
+          engine: () => [{name:"Carrera",type:"run",target:"800",unit:"m"},{name:"SkiErg",type:"station",target:"500",unit:"m"},{name:"Remo",type:"station",target:"500",unit:"m"},{name:"Descanso",type:"rest",target:"60",unit:"s"}],
+        };
+        let builderBlocks = db.get("builderDraft", []);
+        let builderRounds = Math.max(1, Number(db.get("builderRounds", 1)) || 1);
+        if(!Array.isArray(builderBlocks)) builderBlocks=[];
+        function blockLabel(block){return [block.target,block.unit].filter(Boolean).join(" ")}
+        function populateBuilderNames(){
+          const type=$("#builderType").value,sel=$("#builderName"),previous=sel.value;
+          const names=type==="run"?["Carrera","Intervalo de carrera","Carrera en cinta"]:type==="rest"?["Descanso","Recuperación activa"]:BUILDER_STATIONS;
+          sel.replaceChildren(...names.map(n=>{const o=document.createElement("option");o.value=o.textContent=n;return o}));
+          if(names.includes(previous))sel.value=previous;
+          if(type==="rest"){$("#builderTarget").value="60";$("#builderUnit").value="s"}else if(type==="run"){$("#builderTarget").value="1000";$("#builderUnit").value="m"}
+        }
+        function saveBuilderDraft(){db.set("builderDraft",builderBlocks);db.set("builderRounds",builderRounds)}
+        function renderBuilder(){
+          const box=$("#builderList");box.replaceChildren();
+          if(!builderBlocks.length){const e=document.createElement("div");e.className="builder-empty";e.textContent="Elige una plantilla o añade el primer bloque de tu entrenamiento.";box.append(e)}
+          builderBlocks.forEach((block,i)=>{
+            const row=document.createElement("div");row.className="builder-block "+block.type;row.dataset.i=i;
+            const no=document.createElement("div");no.className="block-index";no.textContent=i+1;
+            const copy=document.createElement("div");copy.className="block-copy";const title=document.createElement("b"),detail=document.createElement("span");title.textContent=block.name;detail.textContent=(block.type==="run"?"Carrera":block.type==="rest"?"Recuperación":"Estación")+" · "+blockLabel(block);copy.append(title,detail);
+            const tools=document.createElement("div");tools.className="block-tools";
+            [["↑","up","Subir"],["↓","down","Bajar"],["×","delete","Eliminar"]].forEach(([label,action,aria])=>{const b=document.createElement("button");b.className="ghost";b.textContent=label;b.dataset.action=action;b.setAttribute("aria-label",aria+" "+block.name);tools.append(b)});
+            row.append(no,copy,tools);box.append(row);
+          });
+          const total=builderBlocks.length*builderRounds;
+          $("#builderCount").textContent=builderBlocks.length+" "+(builderBlocks.length===1?"bloque":"bloques");
+          $("#roundPreview").textContent=builderRounds+" "+(builderRounds===1?"ronda":"rondas")+" · "+total+" tramos totales";
+          $("#builderRounds").value=String(builderRounds);$("#useWorkoutBtn").disabled=!builderBlocks.length;saveBuilderDraft();
+        }
+        function addBuilderBlock(){
+          const target=$("#builderTarget").value.trim().replace(",","."),type=$("#builderType").value;
+          if(!target||!Number.isFinite(Number(target))||Number(target)<=0)return notice("Introduce un objetivo válido.",true);
+          builderBlocks.push({name:$("#builderName").value,type,target,unit:$("#builderUnit").value});renderBuilder();
+        }
+        function useBuilderWorkout(){
+          if(!builderBlocks.length)return;const expanded=[];
+          for(let round=1;round<=builderRounds;round++)builderBlocks.forEach(block=>expanded.push({name:(builderRounds>1?"R"+round+" · ":"")+block.name+" — "+blockLabel(block),type:block.type==="rest"?"transition":block.type,round,target:block.target,unit:block.unit}));
+          cfg.customSegments=expanded;db.set("config",cfg);mode="custom";$$('.mode').forEach(b=>b.classList.toggle("active",b.dataset.mode==="custom"));renderInputs();rebuild();
+          $(".tab[data-tab='timer']").click();notice("Sesión preparada: "+builderRounds+" ronda(s) y "+expanded.length+" tramos ✓");
+        }
         function build(m = mode) {
           const full = [];
           for (let i = 0; i < 8; i++) {
@@ -2177,6 +2275,13 @@
           };
           rd.readAsText(file);
         }
+        $("#builderType").onchange=populateBuilderNames;
+        $("#addBlockBtn").onclick=addBuilderBlock;
+        $("#duplicateLastBtn").onclick=()=>{if(builderBlocks.length){builderBlocks.push({...builderBlocks.at(-1)});renderBuilder()}else notice("Añade primero un bloque.",true)};
+        $("#builderRounds").onchange=e=>{builderRounds=Math.max(1,Number(e.target.value)||1);renderBuilder()};
+        $("#templateGrid").onclick=e=>{const b=e.target.closest("[data-template]");if(!b)return;const load=()=>{builderBlocks=builderTemplates[b.dataset.template]();builderRounds=b.dataset.template==="engine"?4:1;renderBuilder()};if(builderBlocks.length)ask("Cargar plantilla","La secuencia actual será sustituida.",load);else load()};
+        $("#builderList").onclick=e=>{const b=e.target.closest("button[data-action]"),row=e.target.closest(".builder-block");if(!b||!row)return;const i=Number(row.dataset.i),action=b.dataset.action;if(action==="delete")builderBlocks.splice(i,1);if(action==="up"&&i>0)[builderBlocks[i-1],builderBlocks[i]]=[builderBlocks[i],builderBlocks[i-1]];if(action==="down"&&i<builderBlocks.length-1)[builderBlocks[i+1],builderBlocks[i]]=[builderBlocks[i],builderBlocks[i+1]];renderBuilder()};
+        $("#useWorkoutBtn").onclick=useBuilderWorkout;
         $$(".tab").forEach(
           (b) =>
             (b.onclick = () => {
@@ -2353,6 +2458,8 @@
         new MutationObserver(labelHistoryAthletes).observe($("#history"), {
           childList: true,
         });
+        populateBuilderNames();
+        renderBuilder();
         renderInputs();
         rebuild();
         renderSplits();
