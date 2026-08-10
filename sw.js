@@ -1,4 +1,4 @@
-const CACHE = "davkar-hyrox-v3-github-4";
+const CACHE = "davkar-hyrox-v4-preview-1";
 const FILES = [
   "./",
   "./index.html",
