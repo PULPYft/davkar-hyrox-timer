@@ -1,8 +1,12 @@
-const CACHE = "davkar-hyrox-v3-github-2";
+const CACHE = "davkar-hyrox-v3-github-3";
 const FILES = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./davkar-icon-180.png",
+  "./davkar-icon-192.png",
+  "./davkar-icon-512.png",
+  "./davkar-maskable-512.png",
   "./davkar-icon.svg",
   "./davkar-maskable.svg"
 ];
